@@ -23,6 +23,16 @@ export default function Header() {
   const { obtenerUsuario } = data || {};
   const { nombre } = obtenerUsuario || {};
 
+  // Proteger que no accedamos a data antes de tener resultados
+  if (loading) return null;
+
+  // Si no hay informacion
+  // Tuve que poner el return debajo, si pongo return router.push('/login') da error
+  if (!obtenerUsuario) {
+    router.push('/login');
+    return <></>;
+  }
+
   const cerrarSesion = () => {
     localStorage.removeItem('token');
     router.push('/login');
