@@ -19,7 +19,18 @@ const authLink = setContext((_, { headers }) => {
 
 const client = new ApolloClient({
   connectToDevTools: true, // no es necesario
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    // Para eliminar el warning cuando se elimina una objecto de un array en el cache [link](https://github.com/apollographql/apollo-client/pull/6372)
+    typePolicies: {
+      Query: {
+        fields: {
+          obtenerClientesVendedor: {
+            merge: false,
+          },
+        },
+      },
+    },
+  }),
   link: authLink.concat(httpLink),
 });
 
